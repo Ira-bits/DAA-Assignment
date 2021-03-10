@@ -5,8 +5,8 @@ TFLAGS = -D TEST
 INC = -I includes
 all : algo
 
-algo : main.o  # Add other .o files here
-		$(CC) main.o -o algo
+algo : main.o Rectangle.o  # Add other .o files here
+		$(CC) main.o Rectangle.o -o algo
 		@mkdir -p $(OUT_DIR)
 		@mv *.o $(OUT_DIR)
 		@mv algo $(OUT_DIR)
@@ -19,7 +19,9 @@ test:   main_test.o
 
 main.o : main.cpp
 			$(CC) $(CFLAGS) main.cpp $(OUTPUT) $(INC)
-
+			
+Rectangle.cpp : Rectangle.cpp
+			$(CC) $(CFLAGS) Rectangle.cpp $(OUTPUT) $(INC)
 
 main_test.o : main.cpp
 			$(CC) $(CFLAGS) $(TFLAGS) main.cpp $(OUTPUT) $(INC)
