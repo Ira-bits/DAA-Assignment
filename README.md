@@ -35,7 +35,7 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 ```cpp
 /**
  * Abhinav Sukumar Rao 2018A7PS0172H
- * Akshay Tiwari 2018A7PS0201
+ * Akshay Tiwari 2018A7PS0201H
  * Aviral Agarwal 2018A7PS0192H
  * Divyanshu Agrawal 2018A7PS0267H
  */
