@@ -1,1 +1,1 @@
-// Initialize all the constants and other settings here.
+// Initialize all the constants and other vectortings here.
