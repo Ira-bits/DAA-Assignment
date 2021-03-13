@@ -1,1 +1,6 @@
-// Initialize all the constants and other settings here.
+// Constants and Settings associated with the algorithm
+#pragma once
+#include "types.hpp"
+
+const coord NEGATIVE_INFINITY = -1000;
+const coord POSITIVE_INFINITY = 1000;

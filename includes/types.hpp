@@ -1,17 +1,42 @@
 #pragma once
 #include <bits/stdc++.h>
-using namespace std;
 
-typedef float coord;
+using std::vector;
+
+typedef int coord;
 
 struct point {
     coord x;
     coord y;
+
+    inline bool operator<(const point &rhs) {
+        if (x != rhs.x) {
+            return x < rhs.x;
+        } else {
+            return y < rhs.y;
+        }
+    } // Not a correct implementation as there is no defined standard, but works for our use case!
 };
 
 struct interval {
     coord bottom;
     coord top;
+
+    inline bool operator==(const interval &rhs) {
+        return std::tie(bottom, top) == std::tie(rhs.bottom, rhs.top);
+    }
+
+    inline bool operator<(const interval &rhs) {
+        if (bottom != rhs.bottom) {
+            return bottom < rhs.bottom;
+        } else {
+            return top < rhs.top;
+        }
+    } // Not a correct implementation as there is no defined standard, but works for our use case!
+
+    inline bool operator>(const interval &rhs) {
+        return bottom <= rhs.bottom && top >= rhs.top;
+    } // Returns True if lhs is an improper superset of rhs, otherwise False
 };
 
 struct line_segment {
@@ -31,19 +56,30 @@ struct rectangle_as_intervals {
     interval y_interval;
 };
 
-enum edgetype { LEFT,
-                RIGHT,
-                BOTTOM,
-                TOP };
+enum class edgetype { LEFT,
+                      RIGHT,
+                      BOTTOM,
+                      TOP };
 
 struct edge {
-    interval intv;
     coord c;
+    interval y_interval;
     edgetype side;
+
+    inline bool operator<(const edge &rhs) {
+        return c < rhs.c;
+    }
 };
 
 struct stripe {
     interval x_interval;
     interval y_interval;
     vector<interval> x_union;
+};
+
+struct stripesReturn {
+    vector<interval> L;
+    vector<interval> R;
+    vector<coord> P;
+    vector<stripe> S;
 };
