@@ -1,6 +1,15 @@
 #include "includes/Rectangle.hpp"
-#include "includes/types.hpp"
 #include <bits/stdc++.h>
+
+Rectangle::Rectangle(coord x_left,
+                     coord x_right,
+                     coord y_bottom,
+                     coord y_top) {
+    this->x_left = x_left;
+    this->x_right = x_right;
+    this->y_bottom = y_bottom;
+    this->y_top = y_top;
+}
 
 rectangle_as_intervals Rectangle::getAsIntervals() {
     interval x_interval = {x_left, x_right};
@@ -11,16 +20,6 @@ rectangle_as_intervals Rectangle::getAsIntervals() {
 
 rectangle_as_coords Rectangle::getAsCoords() {
     return {x_left, x_right, y_bottom, y_top};
-}
-
-Rectangle::Rectangle(coord x_left,
-                     coord x_right,
-                     coord y_bottom,
-                     coord y_top) {
-    this->x_left = x_left;
-    this->x_right = x_right;
-    this->y_bottom = y_bottom;
-    this->y_top = y_top;
 }
 
 Rectangle::Rectangle(interval x_interval, interval y_interval) {

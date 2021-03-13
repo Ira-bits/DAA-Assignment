@@ -1,10 +1,5 @@
-#include "includes/Rectangle.hpp"
-#include "includes/types.hpp"
+#include "includes/lib.hpp"
 #include <bits/stdc++.h>
-
-using namespace std;
-
-vector<point> uinon(vector<Rectangle> R);
 
 vector<coord> y_vector(vector<Rectangle> R) {
     vector<coord> yv;
@@ -64,4 +59,53 @@ vector<interval> intervals(vector<coord> coords) {
     }
 
     return intervals;
+}
+
+bool sortByBottom(interval &a, interval &b) {
+    return a.bottom < b.bottom;
+}
+
+vector<interval> intervalUnion(vector<interval> X) {
+    sort(X.begin(), X.end(), sortByBottom);
+    vector<interval> united;
+    bool last = 0;
+    for (vector<interval>::iterator it = X.begin(); it < X.end() - 1; it++) {
+        if ((*it).top < (*(it + 1)).bottom) {
+            united.push_back(*it);
+        } else {
+            coord start = (*it).bottom;
+            while (it < X.end() - 1) {
+                if ((*it).top >= (*(it + 1)).bottom) {
+                    it++;
+                } else {
+                    break;
+                }
+            }
+            if (it == X.end() - 1) {
+                last = 1;
+            }
+            interval intv = {start, (*it).top};
+            united.push_back(intv);
+        }
+    }
+    if (!last) {
+        united.push_back(X[X.size() - 1]);
+    }
+    return united;
+}
+
+vector<edge> findVerticalEdges(vector<Rectangle> R) {
+    rectangle_as_coords rCoords;
+    rectangle_as_intervals rIntervals;
+    edge l, r;
+    vector<edge> V;
+    for (Rectangle rect : R) {
+        rCoords = rect.getAsCoords();
+        rIntervals = rect.getAsIntervals();
+        l = {rCoords.x_left, rIntervals.y_interval, edgetype::LEFT};
+        r = {rCoords.x_right, rIntervals.y_interval, edgetype::RIGHT};
+        V.push_back(l);
+        V.push_back(r);
+    }
+    return V;
 }
