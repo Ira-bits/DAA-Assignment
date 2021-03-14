@@ -12,7 +12,7 @@ import os
 import subprocess
 from pathlib import Path
 
-SKIP_COMPILE = True
+SKIP_COMPILE = False
 TESTCASE_DIR = "./tests"
 ALGO_LOC = "./build/algo"
 CRED = '\033[91m'
