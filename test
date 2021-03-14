@@ -60,10 +60,10 @@ while True:
 
     if diff_return_code != 0:
         del_line()
-        print((CRED + "Test case {} failed." + CEND).format(test_num))
-        # expected = Path(curr_out_path).read_text().strip()
-        # got = Path("temp.out").read_text().strip()
-        # print("Expected:\n{}\nGot:\n{}\n".format(expected, got))
+        print((CRED + "Test case {} failed." + CEND).format(test_num), end="")
+        expected = Path(curr_out_path).read_text().strip()
+        got = Path("temp.out").read_text().strip()
+        print(" Expected \"{}\" Got \"{}\".".format(expected, got))
         fail_num += 1
     elif diff_return_code == 2:
         del_line()
