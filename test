@@ -9,10 +9,17 @@
 # out file should contain the expected output
 
 import os
+import sys
 import subprocess
 from pathlib import Path
 
-SKIP_COMPILE = False
+
+def del_line():
+    sys.stdout.write("\033[F")  # back to previous line
+    sys.stdout.write("\033[K")  # clear line
+
+
+SKIP_COMPILE = True
 TESTCASE_DIR = "./tests"
 ALGO_LOC = "./build/algo"
 CRED = '\033[91m'
@@ -30,6 +37,7 @@ if not SKIP_COMPILE:
     if compilation_result != 0:
         print(CRED + "Compilation failed" + CEND)
         exit()
+
 
 os.system("clear")
 
@@ -51,17 +59,20 @@ while True:
     diff_return_code = os.system(diff_cmd)
 
     if diff_return_code != 0:
-        print((CRED + "Test case {} failed.\n" + CEND).format(test_num))
+        del_line()
+        print((CRED + "Test case {} failed." + CEND).format(test_num))
         # expected = Path(curr_out_path).read_text().strip()
         # got = Path("temp.out").read_text().strip()
         # print("Expected:\n{}\nGot:\n{}\n".format(expected, got))
         fail_num += 1
     elif diff_return_code == 2:
+        del_line()
         print((CRED + "Fatal error with diff for test {}, diff command was '{}'\n" + CEND).format(
             test_num, diff_cmd))
         fail_num += 1
     else:
-        print((CGREEN + "Test case {} passed.\n" + CEND).format(test_num))
+        del_line()
+        print((CGREEN + "Test case {} passed." + CEND).format(test_num))
         pass_num += 1
 
 os.system("rm -f temp.out")
