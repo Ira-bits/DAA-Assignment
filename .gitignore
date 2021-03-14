@@ -33,3 +33,5 @@
 
 # Project Specific
 build
+*.diff
+*.err
