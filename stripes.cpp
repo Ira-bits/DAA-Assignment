@@ -91,7 +91,6 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
     // Division part of the STRIPES Algorithm
     coord xm;
     int divIndex;
-    sort(V.begin(), V.end());
     if (V.size() % 2) {
         divIndex = V.size() / 2;
     } else {
