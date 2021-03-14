@@ -94,6 +94,14 @@ vector<interval> intervalUnion(vector<interval> X) {
     return united;
 }
 
+bool customSort(edge &a, edge &b) {
+    if(a.c != b.c){
+        return a.c<b.c;
+    }else{
+        return a.side==edgetype::LEFT;
+    }
+}
+
 vector<edge> findVerticalEdges(vector<Rectangle> R) {
     rectangle_as_coords rCoords;
     rectangle_as_intervals rIntervals;
@@ -107,5 +115,6 @@ vector<edge> findVerticalEdges(vector<Rectangle> R) {
         V.push_back(l);
         V.push_back(r);
     }
+    sort(V.begin(),V.end(),customSort);
     return V;
 }
