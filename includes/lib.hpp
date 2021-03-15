@@ -7,7 +7,7 @@
  * \param vector<Rectangles> a set of Rectangles.
  * \return vector<point> a set of Co-ordinates of X-Union
 */
-vector<point> uinon(vector<Rectangle>);
+vector<point> Union(vector<Rectangle>);
 
 /**
  * \brief Calculates Y Projections of the top and bottom co-ordinates of a set of Rectangles.
@@ -35,11 +35,24 @@ vector<coord> x_poj(vector<point>);
  * \param vector<interval> a set of x-intervals
  * \return vector<intervals> a set of merged/united intervals
 */
-vector<interval> intervalUnion(vector<interval>);
+vector<interval> Union(vector<interval>);
 
 /**
- * \brief Finds all the vertical edges associated with the Rectangle Set.
- * \param vector<Rectangle> a set of Rectagles.
- * \return vector<edge> a set of Vertical edges.
+ * \overload Calculates X-Union over a set of line_segments.
 */
-vector<edge> findVerticalEdges(vector<Rectangle>);
+vector<line_segment> Union(vector<line_segment>);
+
+/**
+ * \brief Calculates X-Intersections over a set of intervals.
+ * \param interval an x-interval
+ * \param vector<interval> a set of x-intervals to be intersected against
+ * \return vector<intervals> result of the intersections
+*/
+vector<interval> intervalIntersection(interval, vector<interval>);
+
+/**
+ * \brief Finds all the vertical and horizontal edges associated with the Rectangle Set.
+ * \param vector<Rectangle> a set of Rectagles.
+ * \return pair<vector<edge>, vector<edge>> a set of edges categorized as horizontal or vertical, in that order.
+*/
+pair<vector<edge>, vector<edge>> findEdges(vector<Rectangle>);

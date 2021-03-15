@@ -1,6 +1,6 @@
 CC = g++
 OUT_DIR = build
-CFLAGS = -c -Wall -Werror -Wpedantic -Wunreachable-code -Wextra -g
+CFLAGS = -c -Wall -Werror -Wpedantic -Wunreachable-code -Wextra -g -std=c++17
 TFLAGS = -D TEST
 INC = -I includes
 all : algo
