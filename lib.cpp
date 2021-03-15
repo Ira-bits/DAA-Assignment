@@ -47,20 +47,6 @@ vector<coord> x_poj(vector<point> pts) {
     return coords;
 }
 
-/**
- * TODO: verify if this implementation is correct
- **/
-vector<interval> intervals(vector<coord> coords) {
-    vector<interval> intervals;
-    sort(coords.begin(), coords.end());
-
-    for (size_t i = 0; i < coords.size() - 1; i++) {
-        intervals.push_back({coords[i], coords[i + 1]});
-    }
-
-    return intervals;
-}
-
 bool sortByBottom(interval &a, interval &b) {
     return a.bottom < b.bottom;
 }
@@ -95,10 +81,12 @@ vector<interval> intervalUnion(vector<interval> X) {
 }
 
 bool customSort(edge &a, edge &b) {
-    if(a.c != b.c){
-        return a.c<b.c;
-    }else{
-        return a.side==edgetype::LEFT;
+    if (a.c != b.c) {
+        return a.c < b.c;
+    } else if (a.side != b.side) {
+        return a.side == edgetype::LEFT;
+    } else {
+        return a.id < b.id;
     }
 }
 
@@ -110,11 +98,11 @@ vector<edge> findVerticalEdges(vector<Rectangle> R) {
     for (Rectangle rect : R) {
         rCoords = rect.getAsCoords();
         rIntervals = rect.getAsIntervals();
-        l = {rCoords.x_left, rIntervals.y_interval, edgetype::LEFT};
-        r = {rCoords.x_right, rIntervals.y_interval, edgetype::RIGHT};
+        l = {rCoords.x_left, rIntervals.y_interval, edgetype::LEFT, rect.id};
+        r = {rCoords.x_right, rIntervals.y_interval, edgetype::RIGHT, rect.id};
         V.push_back(l);
         V.push_back(r);
     }
-    sort(V.begin(),V.end(),customSort);
+    sort(V.begin(), V.end(), customSort);
     return V;
 }

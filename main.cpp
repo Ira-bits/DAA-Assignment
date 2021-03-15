@@ -14,7 +14,7 @@ int main() {
     vector<Rectangle> R;
     for (int i = 0; i < n; i++) {
         cin >> x_left >> x_right >> y_bottom >> y_top;
-        Rectangle rect(x_left, x_right, y_bottom, y_top);
+        Rectangle rect(x_left, x_right, y_bottom, y_top,i);
         R.push_back(rect);
     }
     RectangleSet rSet(R);

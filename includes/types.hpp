@@ -3,7 +3,7 @@
 
 using std::vector;
 
-typedef int coord;
+typedef float coord;
 
 struct point {
     coord x;
@@ -27,16 +27,21 @@ struct interval {
     }
 
     inline bool operator<(const interval &rhs) {
-        if (bottom != rhs.bottom) {
-            return bottom < rhs.bottom;
-        } else {
-            return top < rhs.top;
-        }
+        return bottom < rhs.bottom || (bottom == rhs.bottom && top < rhs.top);
     } // Not a correct implementation as there is no defined standard, but works for our use case!
 
     inline bool operator>(const interval &rhs) {
         return bottom <= rhs.bottom && top >= rhs.top;
     } // Returns True if lhs is an improper superset of rhs, otherwise False
+};
+
+struct edgeInterval {
+    interval intv;
+    int id;
+
+    inline bool operator<(const edgeInterval &rhs) {
+        return intv < rhs.intv || (intv == rhs.intv && id < rhs.id);
+    } // Not a correct implementation as there is no defined standard, but works for our use case!
 };
 
 struct line_segment {
@@ -65,10 +70,7 @@ struct edge {
     coord c;
     interval y_interval;
     edgetype side;
-
-    inline bool operator<(const edge &rhs) {
-        return c < rhs.c;
-    }
+    int id;
 };
 
 struct stripe {
@@ -78,8 +80,8 @@ struct stripe {
 };
 
 struct stripesReturn {
-    vector<interval> L;
-    vector<interval> R;
+    vector<edgeInterval> L;
+    vector<edgeInterval> R;
     vector<coord> P;
     vector<stripe> S;
 };

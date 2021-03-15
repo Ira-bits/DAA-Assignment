@@ -16,7 +16,7 @@ vector<stripe> copy(vector<stripe>, vector<coord>, interval);
  * \param vector<stripe>& a set of stripes
  * \param vector<interval> a set of y-intervals of stripes without a partner
 */
-void blacken(vector<stripe> &, vector<interval>);
+void blacken(vector<stripe> &, vector<edgeInterval>);
 
 /**
  * \brief Concatenates adjacent stripes.
