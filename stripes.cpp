@@ -23,10 +23,10 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
     return SCopy;
 }
 
-void blacken(vector<stripe> &S, vector<interval> J) {
+void blacken(vector<stripe> &S, vector<edgeInterval> J) {
     for (vector<stripe>::iterator it = S.begin(); it < S.end(); it++) {
-        for (interval intv : J) {
-            if (intv > (*it).y_interval) {
+        for (edgeInterval intv : J) {
+            if (intv.intv > (*it).y_interval) {
                 (*it).x_union = {(*it).x_interval};
             }
         }
@@ -62,13 +62,14 @@ vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord>
 }
 
 stripesReturn stripes(vector<edge> V, interval x_ext) {
-    vector<interval> L, R;
+    vector<edgeInterval> L, R;
     vector<stripe> S;
     vector<coord> P;
 
     // Base Case for the Divide and Conquer Algorithm
     if (V.size() == 1) {
         interval intv;
+        edgeInterval eIntv;
         P = {NEGATIVE_INFINITY, V[0].y_interval.bottom, V[0].y_interval.top, POSITIVE_INFINITY};
         vector<interval> partitions = partition(P);
         for (interval p : partitions) {
@@ -78,10 +79,12 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
             }
         }
         if (V[0].side == edgetype::LEFT) {
-            L.push_back(V[0].y_interval);
+            eIntv = {V[0].y_interval, V[0].id};
+            L.push_back(eIntv);
             intv = {V[0].c, x_ext.top};
         } else {
-            R.push_back(V[0].y_interval);
+            eIntv = {V[0].y_interval, V[0].id};
+            R.push_back(eIntv);
             intv = {x_ext.bottom, V[0].c};
         }
         S[0].x_union.push_back(intv);
@@ -107,7 +110,7 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
 
     // Merge part of the STRIPES Algorithm
 
-    vector<interval> LR, LInt, RInt; // LInt, RInt => L intermediate, R Intermediate
+    vector<edgeInterval> LR, LInt, RInt; // LInt, RInt => L intermediate, R Intermediate
     // LR = L1 intersection R2
     set_intersection(ret1.L.begin(), ret1.L.end(), ret2.R.begin(), ret2.R.end(), back_inserter(LR));
     // LInt = L1 - LR

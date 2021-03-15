@@ -31,13 +31,6 @@ vector<interval> partition(vector<coord>);
 vector<coord> x_poj(vector<point>);
 
 /**
- * \brief Calcluates intervals for a set of co-prdinates.
- * \param vector<coord> a set of co-ordinates
- * \return vector<interval a set of intervals
-*/
-vector<interval> intervals(vector<coord>);
-
-/**
  * \brief Calculates X-Union over a set of intervals.
  * \param vector<interval> a set of x-intervals
  * \return vector<intervals> a set of merged/united intervals
