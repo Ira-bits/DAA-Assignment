@@ -35,6 +35,9 @@ lib.o : lib.cpp
 main_test.o : main.cpp
 			$(CC) $(CFLAGS) $(TFLAGS) main.cpp $(OUTPUT) $(INC)
 
+test:
+	./test
+
 clean : 
 			rm -rf $(OUT_DIR)
 			
