@@ -9,8 +9,11 @@
 class RectangleSet {
   private:
     vector<Rectangle> R;
-    vector<edge> V; // Using Standard notations everywhere as per the algorithm description
-    interval x_ext; // Frame Boundaries
+    vector<edge> H, V; // Using Standard notations everywhere as per the algorithm description
+    interval x_ext;    // Frame Boundaries
+
+    //Utility function for calculating contour
+    vector<line_segment> contourPieces(edge h, vector<stripe> S);
 
   public:
     vector<stripe> S;
@@ -21,5 +24,5 @@ class RectangleSet {
     // Calculates Measure for the given Rectangle Set
     void calculateMeasure();
     // Calculates Contour for the given Rectangle Set
-    void calculateContour();
+    vector<line_segment> calculateContour();
 };

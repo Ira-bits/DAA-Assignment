@@ -10,13 +10,15 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
     vector<stripe> SCopy;
     vector<interval> partitions = partition(P);
     for (interval p : partitions) {
-        stripe s = {x_int, p, {}};
+        stripe s = {x_int, p, {}, 0, nullptr};
         SCopy.push_back(s);
     }
     for (vector<stripe>::iterator it = SCopy.begin(); it < SCopy.end(); it++) {
+        //sort --> nlogn using binsearch
         for (stripe s : S) {
             if (s.y_interval > (*it).y_interval) {
-                (*it).x_union = s.x_union;
+                (*it).x_union = s.x_union; //[D]
+                (*it).x_measure = s.x_measure;
             }
         }
     }
@@ -25,9 +27,12 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
 
 void blacken(vector<stripe> &S, vector<edgeInterval> J) {
     for (vector<stripe>::iterator it = S.begin(); it < S.end(); it++) {
+        //sort --> nlogn , O(1) to determine after that
         for (edgeInterval intv : J) {
             if (intv.intv > (*it).y_interval) {
-                (*it).x_union = {(*it).x_interval};
+                (*it).x_union = {(*it).x_interval}; //[E]
+                (*it).x_measure = (*it).x_interval.top - (*it).x_interval.bottom;
+                break; //redundant to check again
             }
         }
     }
@@ -36,25 +41,33 @@ void blacken(vector<stripe> &S, vector<edgeInterval> J) {
 vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord> P, interval x_int) {
     vector<stripe> SNew;
     vector<interval> toUnite; // Contains the x_unions of stripes with same y_intervals
+    vector<stripe> sUnite(2, {{NEGATIVE_INFINITY, POSITIVE_INFINITY}, {0, 0}, {}, 0, nullptr});
     vector<interval> partitions = partition(P);
     for (interval p : partitions) {
         toUnite.clear();
+        //sort --> nlogn
         for (stripe s : SLeft) {
             if (s.y_interval == p) {
-                for (interval intv : s.x_union) {
-                    toUnite.push_back(intv);
-                }
+                sUnite[0] = s;
+                break; //only 1 such s
             }
         }
         for (stripe s : SRight) {
             if (s.y_interval == p) {
-                for (interval intv : s.x_union) {
-                    toUnite.push_back(intv);
-                }
+                sUnite[1] = s;
+                break; //only 1 such s
             }
         }
+
+        for (interval intv : sUnite[0].x_union) {
+            toUnite.push_back(intv);
+        }
+        for (interval intv : sUnite[1].x_union) {
+            toUnite.push_back(intv);
+        }
+
         if (toUnite.size()) {
-            stripe s = {x_int, p, intervalUnion(toUnite)};
+            stripe s = {x_int, p, Union(toUnite) /*[F]*/, sUnite[0].x_measure + sUnite[1].x_measure, nullptr};
             SNew.push_back(s);
         }
     }
@@ -69,25 +82,30 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
     // Base Case for the Divide and Conquer Algorithm
     if (V.size() == 1) {
         interval intv;
+        double x_measure;
         edgeInterval eIntv;
-        P = {NEGATIVE_INFINITY, V[0].y_interval.bottom, V[0].y_interval.top, POSITIVE_INFINITY};
+        P = {NEGATIVE_INFINITY, V[0].inter.bottom, V[0].inter.top, POSITIVE_INFINITY};
         vector<interval> partitions = partition(P);
         for (interval p : partitions) {
-            if (p == V[0].y_interval) {
-                stripe s = {x_ext, p, {}};
+            if (p == V[0].inter) {
+                stripe s = {x_ext, p, {}, 0, nullptr};
                 S.push_back(s);
             }
         }
-        if (V[0].side == edgetype::LEFT) {
-            eIntv = {V[0].y_interval, V[0].id};
+        if (V[0].side == edgeType::LEFT) {
+            eIntv = {V[0].inter, V[0].id};
             L.push_back(eIntv);
-            intv = {V[0].c, x_ext.top};
+            intv = {V[0].c, x_ext.top}; //[B]
+            x_measure = x_ext.top - V[0].c;
+
         } else {
-            eIntv = {V[0].y_interval, V[0].id};
+            eIntv = {V[0].inter, V[0].id};
             R.push_back(eIntv);
-            intv = {x_ext.bottom, V[0].c};
+            intv = {x_ext.bottom, V[0].c}; //[C]
+            x_measure = V[0].c - x_ext.bottom;
         }
         S[0].x_union.push_back(intv);
+        S[0].x_measure = x_measure;
         return {L, R, P, S};
     }
 

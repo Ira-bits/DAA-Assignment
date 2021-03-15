@@ -6,7 +6,7 @@
  * \brief Extends the boundaries of SLeft and SRight.
  * \param vector<stripe> a set of stripes
  * \param vector<coord> a set of Co-ordinates
- * \param interaval interval depicting frame boundaries
+ * \param interval interval depicting frame boundaries
  * \return vector<stripe>  the set of extended stripes  
 */
 vector<stripe> copy(vector<stripe>, vector<coord>, interval);
