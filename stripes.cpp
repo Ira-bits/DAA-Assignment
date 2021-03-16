@@ -18,7 +18,9 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
         for (stripe s : S) {
             if (s.y_interval > (*it).y_interval) {
                 (*it).x_union = s.x_union; //[D]
+
                 (*it).x_measure = s.x_measure;
+                (*it).tree = s.tree;
             }
         }
     }
@@ -32,6 +34,7 @@ void blacken(vector<stripe> &S, vector<edgeInterval> J) {
             if (intv.intv > (*it).y_interval) {
                 (*it).x_union = {(*it).x_interval}; //[E]
                 (*it).x_measure = (*it).x_interval.top - (*it).x_interval.bottom;
+                (*it).tree = nullptr;
                 break; //redundant to check again
             }
         }
@@ -67,7 +70,15 @@ vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord>
         }
 
         if (toUnite.size()) {
+
             stripe s = {x_int, p, Union(toUnite) /*[F]*/, sUnite[0].x_measure + sUnite[1].x_measure, nullptr};
+            if (sUnite[0].tree != nullptr && sUnite[1].tree != nullptr) {
+                s.tree = new ctree({s.x_interval.top, lru::UNDEF, sUnite[0].tree, sUnite[1].tree});
+            } else if (sUnite[0].tree != nullptr) {
+                s.tree = sUnite[0].tree;
+            } else if (sUnite[0].tree != nullptr) {
+                s.tree = sUnite[1].tree;
+            }
             SNew.push_back(s);
         }
     }
@@ -96,13 +107,17 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
             eIntv = {V[0].inter, V[0].id};
             L.push_back(eIntv);
             intv = {V[0].c, x_ext.top}; //[B]
+
             x_measure = x_ext.top - V[0].c;
+            S[0].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr});
 
         } else {
             eIntv = {V[0].inter, V[0].id};
             R.push_back(eIntv);
             intv = {x_ext.bottom, V[0].c}; //[C]
+
             x_measure = V[0].c - x_ext.bottom;
+            S[0].tree = new ctree({V[0].c, lru::RIGHT, nullptr, nullptr});
         }
         S[0].x_union.push_back(intv);
         S[0].x_measure = x_measure;
