@@ -83,7 +83,8 @@ enum class lru {
 struct ctree {
     double x;
     lru side;
-    ctree *lson, *rson;
+    ctree *lson;
+    ctree *rson;
 };
 
 class stripe {
