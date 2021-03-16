@@ -109,7 +109,7 @@ vector<line_segment> Union(vector<line_segment> X) {
         } else {
             coord start = (*it).intv.bottom;
             while (it < X.end() - 1) {
-                if ((*it).intv.top >= (*(it + 1)).intv.bottom) {
+                if ((*it).ltop == (*(it + 1)).ltop && (*it).intv.top >= (*(it + 1)).intv.bottom) {
                     it++;
                 } else {
                     break;
@@ -132,7 +132,7 @@ vector<interval> intervalIntersection(interval inter, vector<interval> x_union) 
 
     vector<interval> intersections;
     for (auto x_inter : x_union) {
-        if (x_inter.top >= inter.bottom || x_inter.bottom <= inter.top) {
+        if (!(x_inter.bottom >= inter.top || inter.bottom >= x_inter.top)) {
             intersections.push_back({std::max(inter.bottom, x_inter.bottom),
                                      std::min(inter.top, x_inter.top)});
         }

@@ -53,5 +53,5 @@ vector<line_segment> RectangleSet::calculateContour() {
         vector<line_segment> c_pieces_h = contourPieces(h, S);
         c_pieces.insert(c_pieces.end(), c_pieces_h.begin(), c_pieces_h.end());
     }
-    return Union(c_pieces);
+    return c_pieces; //Union(c_pieces);
 }
