@@ -32,15 +32,21 @@ void dfs(ctree *cur, vector<ctree> &free_edges, interval h_interval) {
             free_edges.push_back(*cur);
         }
         return;
+
     } else if (cur->lson != nullptr && cur->rson != nullptr) {
         if (cur->x > h_interval.top) {
+
             dfs(cur->lson, free_edges, h_interval);
+
         } else if (cur->x < h_interval.bottom) {
+
+            dfs(cur->rson, free_edges, h_interval);
+
+        } else {
+
+            dfs(cur->lson, free_edges, h_interval);
             dfs(cur->rson, free_edges, h_interval);
         }
-    } else {
-        dfs(cur->lson, free_edges, h_interval);
-        dfs(cur->rson, free_edges, h_interval);
     }
 }
 
@@ -56,13 +62,25 @@ vector<line_segment> RectangleSet::contourPieces(edge h, vector<stripe> S) {
         }
     }
     vector<interval> J;
-    vector<ctree> free_edges;
+    vector<ctree> leaf_edges;
 
-    dfs(s.tree, free_edges, h.inter); //get all intervals
+    dfs(s.tree, leaf_edges, h.inter); //get all intervals
 
-    for (long unsigned int i = 1; i < free_edges.size(); i++) {
-        if (free_edges[i].side == lru::LEFT && free_edges[i - 1].side == lru::RIGHT) {
-            J.push_back({free_edges[i - 1].x, free_edges[i].x});
+    if (leaf_edges.empty()) {
+        J.push_back({h.inter.bottom, h.inter.top});
+    } else {
+        for (long unsigned int i = 0; i < leaf_edges.size(); i++) {
+            if (i == 0 && leaf_edges[i].side == lru::LEFT) {
+                if (h.inter.bottom < leaf_edges[i].x) {
+                    J.push_back({h.inter.bottom, leaf_edges[i].x});
+                }
+            } else if (leaf_edges[i].side == lru::LEFT && leaf_edges[i - 1].side == lru::RIGHT) {
+                J.push_back({leaf_edges[i - 1].x, leaf_edges[i].x});
+            }
+        }
+        int alpha = leaf_edges.size() - 1;
+        if (leaf_edges[alpha].side == lru::RIGHT && h.inter.top > leaf_edges[alpha].x) {
+            J.push_back({leaf_edges[alpha].x, h.inter.top});
         }
     }
 

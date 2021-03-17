@@ -77,7 +77,7 @@ vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord>
             stripe s = {x_int, p, Union(toUnite) /*[F]*/, sUnite[0].x_measure + sUnite[1].x_measure, nullptr};
 
             if (sUnite[0].tree != nullptr && sUnite[1].tree != nullptr) {
-                s.tree = new ctree({s.x_interval.top, lru::UNDEF, sUnite[0].tree, sUnite[1].tree});
+                s.tree = new ctree({sUnite[0].x_interval.top, lru::UNDEF, sUnite[0].tree, sUnite[1].tree});
             } else if (sUnite[0].tree != nullptr) {
                 s.tree = sUnite[0].tree;
             } else if (sUnite[1].tree != nullptr) {

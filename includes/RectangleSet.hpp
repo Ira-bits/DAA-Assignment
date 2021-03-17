@@ -25,4 +25,6 @@ class RectangleSet {
     void calculateMeasure();
     // Calculates Contour for the given Rectangle Set
     vector<line_segment> calculateContour();
+    // Swap edges
+    void stripeSwapped();
 };
