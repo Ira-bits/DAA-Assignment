@@ -2,6 +2,7 @@
 #include <bits/stdc++.h>
 
 using std::pair;
+//using std::set;
 using std::vector;
 
 typedef float coord;
@@ -81,7 +82,7 @@ enum class lru {
 };
 
 struct ctree {
-    double x;
+    float x;
     lru side;
     ctree *lson;
     ctree *rson;
@@ -92,8 +93,8 @@ class stripe {
     interval x_interval;
     interval y_interval;
     vector<interval> x_union;
-    double x_measure;
-    ctree *tree;
+    float x_measure;
+    ctree *tree = nullptr;
 };
 
 struct stripesReturn {
