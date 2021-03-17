@@ -47,6 +47,7 @@ fail_num = 0
 
 while True:
     test_num += 1
+    os.system("sleep 1")
     curr_in_path = os.path.join(TESTCASE_DIR, str(test_num) + ".in")
     curr_out_path = os.path.join(TESTCASE_DIR, str(test_num) + ".out")
     if not os.path.exists(curr_in_path):
