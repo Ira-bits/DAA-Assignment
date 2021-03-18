@@ -58,6 +58,12 @@ while True:
     os.system(exec_cmd)
     diff_return_code = os.system(diff_cmd)
 
+    f = open("./tests/tcase" + str(test_num) + ".out", "a")
+    f.seek(0)
+    f.truncate()
+    f.write(Path("temp.out").read_text().strip())
+    f.close()
+
     if diff_return_code != 0:
         del_line()
         print((CRED + "Test case {} failed." + CEND).format(test_num), end="")

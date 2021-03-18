@@ -1,6 +1,7 @@
 #include "includes/RectangleSet.hpp"
 #include "includes/lib.hpp"
 #include <bits/stdc++.h>
+#include <fstream>
 
 using std::cin;
 using std::cout;
@@ -21,8 +22,8 @@ int main() {
     rSet.calculateMeasure();
     vector<line_segment> contour_pieces = rSet.calculateContour();
     cout << rSet.measure << endl;
-    for (line_segment c : contour_pieces) {
-        cout << c.intv.top << " " << c.intv.bottom << " " << c.ltop << endl;
-    }
+    //for (line_segment c : contour_pieces) {
+    //    cout << c.intv.top << " " << c.intv.bottom << " " << c.ltop << endl;
+    //}
     return 0;
 }
