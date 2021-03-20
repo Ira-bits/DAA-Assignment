@@ -2,5 +2,5 @@
 #pragma once
 #include "types.hpp"
 
-const coord NEGATIVE_INFINITY = -1000;
-const coord POSITIVE_INFINITY = 1000;
+const coord NEGATIVE_INFINITY = -1000000;
+const coord POSITIVE_INFINITY = 1000000;

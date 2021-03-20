@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+n = 500
+print(n)
+counter = 0
+i = 0
+while counter != n:
+    print(0, 10, i, i+10)
+    i += 11
+    counter += 1

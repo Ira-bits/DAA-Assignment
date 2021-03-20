@@ -1,8 +1,9 @@
 CC = g++
 OUT_DIR = build
-CFLAGS = -c -Wall -Werror -Wpedantic -Wunreachable-code -Wextra -g -std=c++17
+CFLAGS = -c -Wall -Werror -Wpedantic -Wunreachable-code -Wextra -g -std=c++17 -O2
 TFLAGS = -D TEST
 INC = -I includes
+.PHONY: test clean
 all : algo
 
 algo : main.o Rectangle.o lib.o RectangleSet.o stripes.o # Add other .o files here
@@ -10,12 +11,6 @@ algo : main.o Rectangle.o lib.o RectangleSet.o stripes.o # Add other .o files he
 		@mkdir -p $(OUT_DIR)
 		@mv *.o $(OUT_DIR)
 		@mv algo $(OUT_DIR)
-
-test:   main_test.o
-			$(CC) main.o -o algo
-		    @mkdir -p $(OUT_DIR)
-		    @mv *.o $(OUT_DIR)
-		    @mv algo $(OUT_DIR)
 
 main.o : main.cpp
 			$(CC) $(CFLAGS) main.cpp $(OUTPUT) $(INC)
@@ -36,7 +31,7 @@ main_test.o : main.cpp
 			$(CC) $(CFLAGS) $(TFLAGS) main.cpp $(OUTPUT) $(INC)
 
 test:
-	./test
+			./test
 
 clean : 
 			rm -rf $(OUT_DIR)
