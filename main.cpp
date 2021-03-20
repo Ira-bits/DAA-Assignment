@@ -27,8 +27,11 @@ int main() {
     vector<line_segment> contour_pieces = rSet.calculateContour();
 
     contour_pieces = Union(contour_pieces);
+	long long sum = 0;
+	cout << contour_pieces.size() << endl;
     for (line_segment c : contour_pieces) {
         cout << c.intv.bottom << " " << c.intv.top << " " << c.ltop << endl;
+		sum += c.intv.top-c.intv.bottom;
     }
 
     std::swap(x_left, y_bottom);
@@ -40,9 +43,15 @@ int main() {
     rSet = RectangleSet(R);
 
     contour_pieces = Union(rSet.calculateContour());
-
-    for (line_segment c : contour_pieces) {
+	
+	cout << contour_pieces.size() << endl;
+    
+	for (line_segment c : contour_pieces) {
         cout << c.intv.bottom << " " << c.intv.top << " " << c.ltop << endl;
+		sum += c.intv.top-c.intv.bottom;
     }
+
+	cout<<sum<<endl;
+
     return 0;
 }
