@@ -36,3 +36,5 @@ build/**/*
 build/*
 *.diff
 *.err
+html
+
