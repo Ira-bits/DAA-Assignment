@@ -1,9 +1,19 @@
 #!/usr/bin/python3
-n = 500
-print(n)
-counter = 0
-i = 0
-while counter != n:
-    print(0, 10, i, i+10)
-    i += 11
-    counter += 1
+import math
+
+
+def gen_tcs_mtx(num_rect) -> [int]:
+
+    print(num_rect)
+    ret = []
+    ret.append(num_rect)
+    lim = int(math.sqrt(num_rect)+1)
+
+    for h in range(0, lim):
+        for x in range(0, lim):
+            print("{} {} {} {}".format(x, x+1, h, h+1))
+
+    return ret
+
+
+gen_tcs_mtx(50000)
