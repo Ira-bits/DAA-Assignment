@@ -13,17 +13,40 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
         stripe s = {x_int, p, {}, 0, nullptr};
         SCopy.push_back(s);
     }
-    for (vector<stripe>::iterator it = SCopy.begin(); it < SCopy.end(); it++) {
-        //sort --> nlogn using binsearch
-        for (stripe s : S) {
-            if (s.y_interval > (*it).y_interval) {
-                (*it).x_union = s.x_union; //[D]
 
-                (*it).x_measure = s.x_measure;
-                (*it).tree = s.tree;
-            }
+    // for (auto s : SCopy) {
+    //     printf("%lf %lf\n", s.y_interval.bottom, s.y_interval.top);
+    // }
+
+    // printf("\n\n");
+
+    vector<stripe>::iterator itr_S = S.begin();
+    vector<stripe>::iterator itr_SCopy = SCopy.begin();
+
+    while (itr_S < S.end() && itr_SCopy < SCopy.end()) {
+
+        if ((*itr_S).y_interval > (*itr_SCopy).y_interval) {
+            (*itr_SCopy).x_union = (*itr_S).x_union;
+            (*itr_SCopy).x_measure = (*itr_S).x_measure;
+            (*itr_SCopy).tree = (*itr_S).tree;
+
+            itr_S++;
+        } else {
+            itr_SCopy++;
         }
     }
+
+    // for (vector<stripe>::iterator it = SCopy.begin(); it < SCopy.end(); it++) {
+    //     //sort --> nlogn using binsearch
+    //     for (stripe s : S) {
+    //         if (s.y_interval > (*it).y_interval) {
+    //             (*it).x_union = s.x_union; //[D]
+
+    //             (*it).x_measure = s.x_measure;
+    //             (*it).tree = s.tree;
+    //         }
+    //     }
+    // }
     return SCopy;
 }
 
