@@ -1,6 +1,5 @@
 #pragma once
 #include "lib.hpp"
-#include <bits/stdc++.h>
 
 /**
  * A class to represent a set of Rectangles with methods for calulating the 

@@ -2,7 +2,6 @@
 #include <bits/stdc++.h>
 
 using std::pair;
-//using std::set;
 using std::vector;
 
 typedef float coord;
@@ -92,7 +91,6 @@ class stripe {
   public:
     interval x_interval;
     interval y_interval;
-    vector<interval> x_union;
     float x_measure;
     ctree *tree = nullptr;
 };

@@ -1,5 +1,4 @@
 #include "includes/lib.hpp"
-#include <bits/stdc++.h>
 
 using std::back_inserter;
 using std::set_difference;
@@ -141,20 +140,7 @@ vector<interval> intervalIntersection(interval inter, vector<interval> x_union) 
     }
     return Union(intersections);
 }
-/*
-vector<interval> intervalDifference(interval inter, vector<interval> intersections) {
-    vector<interval> differences;
-    for (interval x_inter : intersections) {
-        if (!(x_inter.bottom >= inter.top || inter.bottom >= x_inter.top)) {
-            int top = std::min({inter.top,x_inter.top});
-            int bottom;
-            if(x_inter.bottom > inter.bottom){
-                bottom = 
-            }
-        }
-    }
-}
-*/
+
 bool customSort(edge &a, edge &b) {
     if (a.c != b.c) {
         return a.c < b.c;

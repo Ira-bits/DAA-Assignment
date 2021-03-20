@@ -31,7 +31,7 @@ vector<stripe> concat(vector<stripe>, vector<stripe>, vector<coord>, interval);
 /**
  * \brief Finds a set of Stripes Associated with a set of Vertical Edges using a Divide And Conquer Algorithm.
  * \param vector<edge> a set of Vertial Edges
- * \param intereval an interval depicting frame boundaries.
+ * \param interval an interval depicting frame boundaries.
  * \return stripesReturn a struct object containing stripes, y-intervals of Left and Right edges and y-projs of Edge endpoints 
 */
 stripesReturn stripes(vector<edge>, interval);

@@ -1,13 +1,12 @@
 #include "includes/RectangleSet.hpp"
 #include "includes/lib.hpp"
-#include <bits/stdc++.h>
 
 using std::cin;
 using std::cout;
 using std::endl;
 
 int main() {
-    // Input to be given in format x_left y_top x_right y_bottom
+    // Input to be given in format x_left x_right y_bottom y_top
     int n;
     cin >> n;
     vector<coord> x_left(n), y_top(n), x_right(n), y_bottom(n);
@@ -21,12 +20,13 @@ int main() {
 
     RectangleSet rSet(R);
 
+    // Calculate Measure
     rSet.calculateMeasure();
     cout << rSet.measure << endl;
 
-    vector<line_segment> contour_pieces = rSet.calculateContour();
+    // Calculate Horizontal Contour Pieces
+    vector<line_segment> contour_pieces = Union(rSet.calculateContour());
 
-    contour_pieces = Union(contour_pieces);
 	long long sum = 0;
 	cout << contour_pieces.size() << endl;
     for (line_segment c : contour_pieces) {
@@ -34,6 +34,7 @@ int main() {
 		sum += c.intv.top-c.intv.bottom;
     }
 
+    // Calculate Vertical Contour Pieces
     std::swap(x_left, y_bottom);
     std::swap(x_right, y_top);
     for (int i = 0; i < n; i++) {
@@ -41,7 +42,6 @@ int main() {
         R[i] = rect;
     }
     rSet = RectangleSet(R);
-
     contour_pieces = Union(rSet.calculateContour());
 	
 	cout << contour_pieces.size() << endl;
@@ -51,6 +51,7 @@ int main() {
 		sum += c.intv.top-c.intv.bottom;
     }
 
+    // Print Total Contour
 	cout<<sum<<endl;
 
     return 0;

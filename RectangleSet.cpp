@@ -84,14 +84,6 @@ vector<line_segment> RectangleSet::contourPieces(edge h, vector<stripe> S) {
         }
     }
 
-    /*
-    vector<interval>
-        h_intersections = intervalIntersection(h.inter, s.x_union);
-    vector<interval> h_wrapper = {h.inter};
-    */
-
-    //std::set_difference(h_wrapper.begin(), h_wrapper.end(), h_intersections.begin(), h_intersections.end(), back_inserter(J));
-
     vector<line_segment> contour_pieces;
 
     for (interval inter : J) {

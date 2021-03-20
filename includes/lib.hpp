@@ -3,11 +3,16 @@
 #include "Rectangle.hpp"
 
 /**
- * \brief Performs Union over a set of Rectangles.
- * \param vector<Rectangles> a set of Rectangles.
- * \return vector<point> a set of Co-ordinates of X-Union
+ * \brief Performs Union over a set of intervals.
+ * \param vector<interval> a set of intervals.
+ * \return vector<interval> a set of merged intervals.
 */
-vector<point> Union(vector<Rectangle>);
+vector<interval> Union(vector<interval>);
+
+/**
+ * \overload Calculates X-Union over a set of line_segments.
+*/
+vector<line_segment> Union(vector<line_segment>);
 
 /**
  * \brief Calculates Y Projections of the top and bottom co-ordinates of a set of Rectangles.
@@ -31,33 +36,12 @@ vector<interval> partition(vector<coord>);
 vector<coord> x_poj(vector<point>);
 
 /**
- * \brief Calculates X-Union over a set of intervals.
- * \param vector<interval> a set of x-intervals
- * \return vector<intervals> a set of merged/united intervals
-*/
-vector<interval> Union(vector<interval>);
-
-/**
- * \overload Calculates X-Union over a set of line_segments.
-*/
-vector<line_segment> Union(vector<line_segment>);
-
-/**
  * \brief Calculates X-Intersections over a set of intervals.
  * \param interval an x-interval
  * \param vector<interval> a set of x-intervals to be intersected against
  * \return vector<intervals> result of the intersections
 */
 vector<interval> intervalIntersection(interval, vector<interval>);
-
-/**
- * \brief Calculates the interval difference over a set of intervals. Note that this is not a difference between sets, but rather intervals.
- * \param interval an x-interval
- * \param vector<interval> a set of x-intervals to be intersected against
- * \return vector<intervals> result of the difference.
-*/
-vector<interval> intervalDifference(interval inter, vector<interval> x_inter);
-
 
 /**
  * \brief Finds all the vertical and horizontal edges associated with the Rectangle Set.
