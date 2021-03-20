@@ -14,52 +14,38 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
         SCopy.push_back(s);
     }
 
-    // for (auto s : SCopy) {
-    //     printf("%lf %lf\n", s.y_interval.bottom, s.y_interval.top);
-    // }
-
-    // printf("\n\n");
-
     vector<stripe>::iterator itr_S = S.begin();
     vector<stripe>::iterator itr_SCopy = SCopy.begin();
 
-    while (itr_S < S.end() && itr_SCopy < SCopy.end()) {
+    while (itr_SCopy < SCopy.end()) {
 
         if ((*itr_S).y_interval > (*itr_SCopy).y_interval) {
             (*itr_SCopy).x_union = (*itr_S).x_union;
             (*itr_SCopy).x_measure = (*itr_S).x_measure;
             (*itr_SCopy).tree = (*itr_S).tree;
-
-            itr_S++;
-        } else {
             itr_SCopy++;
+        } else {
+            itr_S++;
         }
     }
 
-    // for (vector<stripe>::iterator it = SCopy.begin(); it < SCopy.end(); it++) {
-    //     //sort --> nlogn using binsearch
-    //     for (stripe s : S) {
-    //         if (s.y_interval > (*it).y_interval) {
-    //             (*it).x_union = s.x_union; //[D]
-
-    //             (*it).x_measure = s.x_measure;
-    //             (*it).tree = s.tree;
-    //         }
-    //     }
-    // }
     return SCopy;
 }
 
 void blacken(vector<stripe> &S, vector<edgeInterval> J) {
-    for (vector<stripe>::iterator it = S.begin(); it < S.end(); it++) {
-        //sort --> nlogn , O(1) to determine after that
-        for (edgeInterval intv : J) {
-            if (intv.intv > (*it).y_interval) {
-                (*it).x_union = {(*it).x_interval}; //[E]
-                (*it).x_measure = (*it).x_interval.top - (*it).x_interval.bottom;
-                (*it).tree = nullptr;
-                break; //redundant to check again
-            }
+    vector<stripe>::iterator it_S = S.begin();
+    vector<edgeInterval>::iterator it_J = J.begin();
+
+    while (it_S < S.end() && it_J < J.end()) {
+        if ((*it_J).intv > (*it_S).y_interval) {
+            (*it_S).x_union = {(*it_S).x_interval}; //[E]
+            (*it_S).x_measure = (*it_S).x_interval.top - (*it_S).x_interval.bottom;
+            (*it_S).tree = nullptr;
+            it_S++;
+        } else if ((*it_S).y_interval < (*it_J).intv) {
+            it_S++;
+        } else {
+            it_J++;
         }
     }
 }
@@ -68,47 +54,30 @@ vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord>
 
     vector<stripe> SNew;
     vector<interval> toUnite; // Contains the x_unions of stripes with same y_intervals
-    vector<stripe> sUnite(2, {{NEGATIVE_INFINITY, POSITIVE_INFINITY}, {0, 0}, {}, 0, nullptr});
     vector<interval> partitions = partition(P);
 
-    for (interval p : partitions) {
-        toUnite.clear();
-        //sort --> nlogn
-        //unordered_map --> n
-        for (stripe s : SLeft) {
-            if (s.y_interval == p) {
-                sUnite[0] = s;
-                break; //only 1 such s
-            }
-        }
-        for (stripe s : SRight) {
-            if (s.y_interval == p) {
-                sUnite[1] = s;
-                break; //only 1 such s
-            }
-        }
-
-        for (interval intv : sUnite[0].x_union) {
+    for (size_t i = 0; i < partitions.size(); i++) {
+        stripe s = {x_int, partitions[i], {}, 0, nullptr};
+        for (interval intv : SLeft[i].x_union) {
             toUnite.push_back(intv);
         }
-        for (interval intv : sUnite[1].x_union) {
+        for (interval intv : SRight[i].x_union) {
             toUnite.push_back(intv);
         }
 
         if (toUnite.size()) {
 
-            stripe s = {x_int, p, Union(toUnite) /*[F]*/, sUnite[0].x_measure + sUnite[1].x_measure, nullptr};
+            s = {x_int, partitions[i], Union(toUnite) /*[F]*/, SLeft[i].x_measure + SRight[i].x_measure, nullptr};
 
-            if (sUnite[0].tree != nullptr && sUnite[1].tree != nullptr) {
-                s.tree = new ctree({sUnite[0].x_interval.top, lru::UNDEF, sUnite[0].tree, sUnite[1].tree});
-            } else if (sUnite[0].tree != nullptr) {
-                s.tree = sUnite[0].tree;
-            } else if (sUnite[1].tree != nullptr) {
-                s.tree = sUnite[1].tree;
+            if (SLeft[i].tree != nullptr && SRight[i].tree != nullptr) {
+                s.tree = new ctree({SLeft[i].x_interval.top, lru::UNDEF, SLeft[i].tree, SRight[i].tree});
+            } else if (SLeft[i].tree != nullptr) {
+                s.tree = SLeft[i].tree;
+            } else if (SRight[i].tree != nullptr) {
+                s.tree = SRight[i].tree;
             }
-
-            SNew.push_back(s);
         }
+        SNew.push_back(s);
     }
 
     return SNew;
@@ -130,10 +99,8 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
         vector<interval> partitions = partition(P);
 
         for (interval p : partitions) {
-            if (p == V[0].inter) {
-                stripe s = {x_ext, p, {}, 0, nullptr};
-                S.push_back(s);
-            }
+            stripe s = {x_ext, p, {}, 0, nullptr};
+            S.push_back(s);
         }
 
         if (V[0].side == edgeType::LEFT) {
@@ -142,7 +109,7 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
             intv = {V[0].c, x_ext.top}; //[B]
 
             x_measure = x_ext.top - V[0].c;
-            S[0].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr});
+            S[1].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr});
 
         } else {
             eIntv = {V[0].inter, V[0].id};
@@ -150,11 +117,11 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
             intv = {x_ext.bottom, V[0].c}; //[C]
 
             x_measure = V[0].c - x_ext.bottom;
-            S[0].tree = new ctree({V[0].c, lru::RIGHT, nullptr, nullptr});
+            S[1].tree = new ctree({V[0].c, lru::RIGHT, nullptr, nullptr});
         }
 
-        S[0].x_union.push_back(intv);
-        S[0].x_measure = x_measure;
+        S[1].x_union.push_back(intv);
+        S[1].x_measure = x_measure;
         return {L, R, P, S};
     }
 
