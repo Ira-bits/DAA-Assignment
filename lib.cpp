@@ -14,32 +14,14 @@ vector<coord> y_vector(vector<Rectangle> R) {
 }
 
 vector<interval> partition(vector<coord> Y) {
-    sort(Y.begin(), Y.end());
-    vector<interval> p;
+    int len = Y.size();
+    vector<interval> ret(len - 1);
 
-    for (size_t i = 0; i < Y.size(); i++) {
-        for (size_t j = i + 1; j < Y.size(); j++) {
-            coord y1 = Y[i], y2 = Y[j];
-
-            bool cond1 = y1 < y2;
-            bool cond2 = true;
-
-            for (coord y : Y) {
-                if (y <= y1 || y >= y2) {
-                    continue;
-                } else {
-                    cond2 = false;
-                    break;
-                }
-            }
-
-            if (cond1 && cond2) {
-                p.push_back({y1, y2});
-            }
-        }
+    for (size_t i = 1; i < Y.size(); i++) {
+        ret[i - 1] = {Y[i - 1], Y[i]};
     }
 
-    return p;
+    return ret;
 }
 
 vector<coord> x_poj(vector<point> pts) {
