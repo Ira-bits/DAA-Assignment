@@ -1,6 +1,5 @@
 #pragma once
 #include "types.hpp"
-#include <bits/stdc++.h>
 
 class Rectangle {
   private:
