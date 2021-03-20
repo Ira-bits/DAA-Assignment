@@ -1,7 +1,6 @@
-# DAA-Assignment
-CS F364 Design And Analysis of Algorithms Assignment
+/\_! \mainpage CS F364 Design And Analysis of Algorithms Assignment
 
-# Guides
+## Guides
 
 To build the project, execute -
 
@@ -15,17 +14,23 @@ To run the project, execute -
 $ build/algo
 ```
 
+To run the tests, execute - 
+
+```
+$ make test
+```
+
 To delete all the build files, execute -
 
 ```
 $ make clean
 ```
 
-# Contributing
+## Contributing
 
 See [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-# Project Team
+## Project Team
 
 - [Abhinav Sukumar Rao](https://github.com/AetherPrior/)
 - [Akshay Tiwari](https://github.com/The-curs0r)

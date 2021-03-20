@@ -40,7 +40,7 @@ def mtx_plot(order: int):
     sizes = []
     times = []
     ord = 2
-    lim = 30000
+    lim = 300000
     while ord <= lim:
         print("{}%".format(100*ord/lim), end='\r')
         sizes.append(ord)
@@ -99,5 +99,5 @@ def do_dim():
 
 if __name__ == "__main__":
     # compile()
-    do_mtx()
-    # do_dim()
+    # do_mtx()
+    do_dim()
