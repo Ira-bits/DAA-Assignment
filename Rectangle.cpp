@@ -1,5 +1,4 @@
 #include "includes/Rectangle.hpp"
-#include <bits/stdc++.h>
 
 Rectangle::Rectangle(coord x_left,
                      coord x_right,

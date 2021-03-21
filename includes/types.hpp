@@ -1,6 +1,7 @@
 #pragma once
 #include <bits/stdc++.h>
 
+using std::pair;
 using std::vector;
 
 typedef float coord;
@@ -46,7 +47,7 @@ struct edgeInterval {
 
 struct line_segment {
     interval intv;
-    coord top;
+    coord ltop;
 };
 
 struct rectangle_as_coords {
@@ -61,22 +62,37 @@ struct rectangle_as_intervals {
     interval y_interval;
 };
 
-enum class edgetype { LEFT,
+enum class edgeType { LEFT,
                       RIGHT,
                       BOTTOM,
                       TOP };
 
 struct edge {
     coord c;
-    interval y_interval;
-    edgetype side;
+    interval inter;
+    edgeType side;
     int id;
 };
 
-struct stripe {
+enum class lru {
+    LEFT,
+    RIGHT,
+    UNDEF
+};
+
+struct ctree {
+    float x;
+    lru side;
+    ctree *lson;
+    ctree *rson;
+};
+
+class stripe {
+  public:
     interval x_interval;
     interval y_interval;
-    vector<interval> x_union;
+    float x_measure;
+    ctree *tree = nullptr;
 };
 
 struct stripesReturn {

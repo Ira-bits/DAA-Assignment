@@ -10,84 +10,101 @@ vector<stripe> copy(vector<stripe> S, vector<coord> P, interval x_int) {
     vector<stripe> SCopy;
     vector<interval> partitions = partition(P);
     for (interval p : partitions) {
-        stripe s = {x_int, p, {}};
+        stripe s = {x_int, p, 0, nullptr};
         SCopy.push_back(s);
     }
-    for (vector<stripe>::iterator it = SCopy.begin(); it < SCopy.end(); it++) {
-        for (stripe s : S) {
-            if (s.y_interval > (*it).y_interval) {
-                (*it).x_union = s.x_union;
-            }
+
+    vector<stripe>::iterator itr_S = S.begin();
+    vector<stripe>::iterator itr_SCopy = SCopy.begin();
+
+    while (itr_SCopy < SCopy.end()) {
+
+        if ((*itr_S).y_interval > (*itr_SCopy).y_interval) {
+            (*itr_SCopy).x_measure = (*itr_S).x_measure; // [D]
+            (*itr_SCopy).tree = (*itr_S).tree;
+            itr_SCopy++;
+        } else {
+            itr_S++;
         }
     }
+
     return SCopy;
 }
 
 void blacken(vector<stripe> &S, vector<edgeInterval> J) {
-    for (vector<stripe>::iterator it = S.begin(); it < S.end(); it++) {
-        for (edgeInterval intv : J) {
-            if (intv.intv > (*it).y_interval) {
-                (*it).x_union = {(*it).x_interval};
-            }
+    vector<stripe>::iterator it_S = S.begin();
+    vector<edgeInterval>::iterator it_J = J.begin();
+
+    while (it_S < S.end() && it_J < J.end()) {
+        if ((*it_J).intv > (*it_S).y_interval) {
+            (*it_S).x_measure = (*it_S).x_interval.top - (*it_S).x_interval.bottom; // [E]
+            (*it_S).tree = nullptr;
+            it_S++;
+        } else if ((*it_S).y_interval < (*it_J).intv) {
+            it_S++;
+        } else {
+            it_J++;
         }
     }
 }
 
 vector<stripe> concat(vector<stripe> SLeft, vector<stripe> SRight, vector<coord> P, interval x_int) {
     vector<stripe> SNew;
-    vector<interval> toUnite; // Contains the x_unions of stripes with same y_intervals
     vector<interval> partitions = partition(P);
-    for (interval p : partitions) {
-        toUnite.clear();
-        for (stripe s : SLeft) {
-            if (s.y_interval == p) {
-                for (interval intv : s.x_union) {
-                    toUnite.push_back(intv);
-                }
-            }
+
+    for (size_t i = 0; i < partitions.size(); i++) {
+
+        stripe s = {x_int, partitions[i], SLeft[i].x_measure + SRight[i].x_measure, nullptr}; // [F]
+
+        if (SLeft[i].tree != nullptr && SRight[i].tree != nullptr) {
+            s.tree = new ctree({SLeft[i].x_interval.top, lru::UNDEF, SLeft[i].tree, SRight[i].tree});
+        } else if (SLeft[i].tree != nullptr) {
+            s.tree = SLeft[i].tree;
+        } else if (SRight[i].tree != nullptr) {
+            s.tree = SRight[i].tree;
         }
-        for (stripe s : SRight) {
-            if (s.y_interval == p) {
-                for (interval intv : s.x_union) {
-                    toUnite.push_back(intv);
-                }
-            }
-        }
-        if (toUnite.size()) {
-            stripe s = {x_int, p, intervalUnion(toUnite)};
-            SNew.push_back(s);
-        }
+        SNew.push_back(s);
     }
+
     return SNew;
 }
 
 stripesReturn stripes(vector<edge> V, interval x_ext) {
+
     vector<edgeInterval> L, R;
     vector<stripe> S;
     vector<coord> P;
 
     // Base Case for the Divide and Conquer Algorithm
     if (V.size() == 1) {
-        interval intv;
+        float x_measure;
         edgeInterval eIntv;
-        P = {NEGATIVE_INFINITY, V[0].y_interval.bottom, V[0].y_interval.top, POSITIVE_INFINITY};
+
+        P = {NEGATIVE_INFINITY, V[0].inter.bottom, V[0].inter.top, POSITIVE_INFINITY};
         vector<interval> partitions = partition(P);
+
         for (interval p : partitions) {
-            if (p == V[0].y_interval) {
-                stripe s = {x_ext, p, {}};
-                S.push_back(s);
-            }
+            stripe s = {x_ext, p, 0, nullptr}; // [A]
+            S.push_back(s);
         }
-        if (V[0].side == edgetype::LEFT) {
-            eIntv = {V[0].y_interval, V[0].id};
+
+        if (V[0].side == edgeType::LEFT) {
+            eIntv = {V[0].inter, V[0].id};
             L.push_back(eIntv);
-            intv = {V[0].c, x_ext.top};
+
+            x_measure = x_ext.top - V[0].c; // [B]
+            // Since S[1].interval == v.y_interval
+            S[1].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr});
+
         } else {
-            eIntv = {V[0].y_interval, V[0].id};
+            eIntv = {V[0].inter, V[0].id};
             R.push_back(eIntv);
-            intv = {x_ext.bottom, V[0].c};
+
+            x_measure = V[0].c - x_ext.bottom; // [C]
+            S[1].tree = new ctree({V[0].c, lru::RIGHT, nullptr, nullptr});
         }
-        S[0].x_union.push_back(intv);
+
+        S[1].x_measure = x_measure;
         return {L, R, P, S};
     }
 
@@ -99,18 +116,21 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
     } else {
         divIndex = V.size() / 2 - 1;
     }
+
     xm = (V[divIndex].c + V[divIndex + 1].c) / 2;
 
     // Conquer part of the STRIPES Algorithm
     vector<edge> V1, V2;
+
     V1.assign(V.begin(), V.begin() + divIndex + 1);
     V2.assign(V.begin() + divIndex + 1, V.end());
+
     stripesReturn ret1 = stripes(V1, {x_ext.bottom, xm});
     stripesReturn ret2 = stripes(V2, {xm, x_ext.top});
 
     // Merge part of the STRIPES Algorithm
-
     vector<edgeInterval> LR, LInt, RInt; // LInt, RInt => L intermediate, R Intermediate
+    
     // LR = L1 intersection R2
     set_intersection(ret1.L.begin(), ret1.L.end(), ret2.R.begin(), ret2.R.end(), back_inserter(LR));
     // LInt = L1 - LR

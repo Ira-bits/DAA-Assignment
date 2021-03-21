@@ -19,7 +19,7 @@ def del_line():
     sys.stdout.write("\033[K")  # clear line
 
 
-SKIP_COMPILE = True
+SKIP_COMPILE = False
 TESTCASE_DIR = "./tests"
 ALGO_LOC = "./build/algo"
 CRED = '\033[91m'
@@ -48,7 +48,8 @@ fail_num = 0
 while True:
     test_num += 1
     curr_in_path = os.path.join(TESTCASE_DIR, str(test_num) + ".in")
-    curr_out_path = os.path.join(TESTCASE_DIR, str(test_num) + ".out")
+    curr_out_path = os.path.join(
+        TESTCASE_DIR, 'tcase' + str(test_num) + ".out")
     if not os.path.exists(curr_in_path):
         test_num -= 1
         break
@@ -57,6 +58,12 @@ while True:
     diff_cmd = "diff -bBw temp.out " + curr_out_path + " > /dev/null 2>/dev/null"
     os.system(exec_cmd)
     diff_return_code = os.system(diff_cmd)
+
+    # f = open("./tests/tcase" + str(test_num) + ".out", "a")
+    # f.seek(0)
+    # f.truncate()
+    # f.write(Path("temp.out").read_text().strip())
+    # f.close()
 
     if diff_return_code != 0:
         del_line()
