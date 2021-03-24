@@ -9,11 +9,12 @@ def gen_tcs_mtx(num_rect) -> [int]:
     ret.append(num_rect)
     lim = int(math.sqrt(num_rect)+1)
 
-    for h in range(0, lim):
+    for h in range(0, 2*lim, 2):
         for x in range(0, lim):
-            print("{} {} {} {}".format(x, x+1, h, h+1))
+            print("{} {} {} {}".format(x, x+2, h, h+1))
 
     return ret
 
 
+# n = input("Enter number of rectangles: ")
 gen_tcs_mtx(50000)

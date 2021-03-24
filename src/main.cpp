@@ -1,3 +1,13 @@
+//
+//      DAA Assignment 1
+//      Members:
+//               Abhinav Sukumar Rao: 2018A7PS0172H
+//               Aviral Agarwal: 2018A7PS0192H
+//               Akshay Tiwari: 2018A7PS0201H
+//               Divyanshu Agrawal: 2018A7PS0267H
+//
+//
+//
 #include "includes/RectangleSet.hpp"
 #include "includes/lib.hpp"
 
@@ -20,22 +30,19 @@ int main() {
 
     RectangleSet rSet(R);
 
-    // Calculate Measure
-    rSet.calculateMeasure();
+    rSet.calculateMeasure(); // Calculate Measure
     cout << rSet.measure << endl;
 
-    // Calculate Horizontal Contour Pieces
-    vector<line_segment> contour_pieces = Union(rSet.calculateContour());
+    vector<line_segment> contour_pieces = Union(rSet.calculateContour()); // Calculate Horizontal Contour Pieces
 
-	long long sum = 0;
-	cout << contour_pieces.size() << endl;
+    long long sum = 0;
+    cout << contour_pieces.size() << endl;
     for (line_segment c : contour_pieces) {
         cout << c.intv.bottom << " " << c.intv.top << " " << c.ltop << endl;
-		sum += c.intv.top-c.intv.bottom;
+        sum += c.intv.top - c.intv.bottom;
     }
 
-    // Calculate Vertical Contour Pieces
-    std::swap(x_left, y_bottom);
+    std::swap(x_left, y_bottom); // Calculate Vertical Contour Pieces
     std::swap(x_right, y_top);
     for (int i = 0; i < n; i++) {
         Rectangle rect(x_left[i], x_right[i], y_bottom[i], y_top[i], i);
@@ -43,16 +50,15 @@ int main() {
     }
     rSet = RectangleSet(R);
     contour_pieces = Union(rSet.calculateContour());
-	
-	cout << contour_pieces.size() << endl;
-    
-	for (line_segment c : contour_pieces) {
+
+    cout << contour_pieces.size() << endl;
+
+    for (line_segment c : contour_pieces) {
         cout << c.intv.bottom << " " << c.intv.top << " " << c.ltop << endl;
-		sum += c.intv.top-c.intv.bottom;
+        sum += c.intv.top - c.intv.bottom;
     }
 
-    // Print Total Contour
-	cout<<sum<<endl;
+    cout << sum << endl; // Print Total Contour
 
     return 0;
 }

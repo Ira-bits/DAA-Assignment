@@ -82,5 +82,6 @@
         "ranges": "cpp",
         "span": "cpp",
         "stop_token": "cpp"
-    }
+    },
+    "python.pythonPath": "/home/l12-o-0-554/Documents/git_clones/DAA-Assignment/DAA/bin/python3"
 }

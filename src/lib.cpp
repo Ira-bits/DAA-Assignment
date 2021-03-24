@@ -31,10 +31,6 @@ vector<coord> x_poj(vector<point> pts) {
     return coords;
 }
 
-/**
- * \brief A custom sort-by-bottom comparator algorithm for line-segments and edges
- * \return If one item is "less" than the other
- */
 template <typename T>
 bool sortByBottom(T &a, T &b) {
     if constexpr (std::is_same_v<T, interval>) {
@@ -124,21 +120,6 @@ vector<line_segment> Union(vector<line_segment> X) {
     }
 
     return united;
-}
-
-vector<interval> intervalIntersection(interval inter, vector<interval> x_union) {
-
-    vector<interval> intersections;
-
-    for (auto x_inter : x_union) {
-
-        if (!(x_inter.bottom >= inter.top || inter.bottom >= x_inter.top)) {
-
-            intersections.push_back({std::max(inter.bottom, x_inter.bottom),
-                                     std::min(inter.top, x_inter.top)});
-        }
-    }
-    return Union(intersections);
 }
 
 bool customSort(edge &a, edge &b) {

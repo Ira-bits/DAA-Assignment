@@ -75,8 +75,7 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
     vector<stripe> S;
     vector<coord> P;
 
-    // Base Case for the Divide and Conquer Algorithm
-    if (V.size() == 1) {
+    if (V.size() == 1) { // Base Case for the Divide and Conquer Algorithm
         float x_measure;
         edgeInterval eIntv;
 
@@ -93,8 +92,8 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
             L.push_back(eIntv);
 
             x_measure = x_ext.top - V[0].c; // [B]
-            // Since S[1].interval == v.y_interval
-            S[1].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr});
+
+            S[1].tree = new ctree({V[0].c, lru::LEFT, nullptr, nullptr}); // Since S[1].interval == v.y_interval
 
         } else {
             eIntv = {V[0].inter, V[0].id};
@@ -108,9 +107,8 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
         return {L, R, P, S};
     }
 
-    // Division part of the STRIPES Algorithm
     coord xm;
-    int divIndex;
+    int divIndex; // Division part of the STRIPES Algorithm
     if (V.size() % 2) {
         divIndex = V.size() / 2;
     } else {
@@ -119,8 +117,7 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
 
     xm = (V[divIndex].c + V[divIndex + 1].c) / 2;
 
-    // Conquer part of the STRIPES Algorithm
-    vector<edge> V1, V2;
+    vector<edge> V1, V2; // Conquer part of the STRIPES Algorithm
 
     V1.assign(V.begin(), V.begin() + divIndex + 1);
     V2.assign(V.begin() + divIndex + 1, V.end());
@@ -130,31 +127,27 @@ stripesReturn stripes(vector<edge> V, interval x_ext) {
 
     // Merge part of the STRIPES Algorithm
     vector<edgeInterval> LR, LInt, RInt; // LInt, RInt => L intermediate, R Intermediate
-    
-    // LR = L1 intersection R2
-    set_intersection(ret1.L.begin(), ret1.L.end(), ret2.R.begin(), ret2.R.end(), back_inserter(LR));
-    // LInt = L1 - LR
-    set_difference(ret1.L.begin(), ret1.L.end(), LR.begin(), LR.end(), back_inserter(LInt));
-    // RInt = R2 - LR
-    set_difference(ret2.R.begin(), ret2.R.end(), LR.begin(), LR.end(), back_inserter(RInt));
-    // L = LInt U L2
-    set_union(LInt.begin(), LInt.end(), ret2.L.begin(), ret2.L.end(), back_inserter(L));
-    // R = R1 U RInt
-    set_union(ret1.R.begin(), ret1.R.end(), RInt.begin(), RInt.end(), back_inserter(R));
-    // P = P1 U P2
-    set_union(ret1.P.begin(), ret1.P.end(), ret2.P.begin(), ret2.P.end(), back_inserter(P));
 
-    // Copy Step
+    set_intersection(ret1.L.begin(), ret1.L.end(), ret2.R.begin(), ret2.R.end(), back_inserter(LR)); // LR = L1 intersection R2
+
+    set_difference(ret1.L.begin(), ret1.L.end(), LR.begin(), LR.end(), back_inserter(LInt)); // LInt = L1 - LR
+
+    set_difference(ret2.R.begin(), ret2.R.end(), LR.begin(), LR.end(), back_inserter(RInt)); // RInt = R2 - LR
+
+    set_union(LInt.begin(), LInt.end(), ret2.L.begin(), ret2.L.end(), back_inserter(L)); // L = LInt U L2
+
+    set_union(ret1.R.begin(), ret1.R.end(), RInt.begin(), RInt.end(), back_inserter(R)); // R = R1 U RInt
+
+    set_union(ret1.P.begin(), ret1.P.end(), ret2.P.begin(), ret2.P.end(), back_inserter(P)); // P = P1 U P2
+
     vector<stripe> SLeft, SRight;
-    SLeft = copy(ret1.S, P, {x_ext.bottom, xm});
+    SLeft = copy(ret1.S, P, {x_ext.bottom, xm}); // Copy Step
     SRight = copy(ret2.S, P, {xm, x_ext.top});
 
-    // Blackening Step
-    blacken(SLeft, RInt);
+    blacken(SLeft, RInt); // Blackening Step
     blacken(SRight, LInt);
 
-    // Concatenation Step
-    S = concat(SLeft, SRight, P, x_ext);
+    S = concat(SLeft, SRight, P, x_ext); // Concatenation Step
 
     return {L, R, P, S};
 }

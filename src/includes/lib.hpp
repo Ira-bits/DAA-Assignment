@@ -10,7 +10,9 @@
 vector<interval> Union(vector<interval>);
 
 /**
- * \overload Calculates X-Union over a set of line_segments.
+ * \brief Calculates X-Union over a set of line_segments.
+ * \param vector<line_segment> a set of line_segments.
+ * \return vector<line_segment> a set of merged line_segments.
 */
 vector<line_segment> Union(vector<line_segment>);
 
@@ -36,16 +38,15 @@ vector<interval> partition(vector<coord>);
 vector<coord> x_poj(vector<point>);
 
 /**
- * \brief Calculates X-Intersections over a set of intervals.
- * \param interval an x-interval
- * \param vector<interval> a set of x-intervals to be intersected against
- * \return vector<intervals> result of the intersections
-*/
-vector<interval> intervalIntersection(interval, vector<interval>);
-
-/**
  * \brief Finds all the vertical and horizontal edges associated with the Rectangle Set.
  * \param vector<Rectangle> a set of Rectagles.
  * \return pair<vector<edge>, vector<edge>> a set of edges categorized as horizontal or vertical, in that order.
 */
 pair<vector<edge>, vector<edge>> findEdges(vector<Rectangle>);
+
+/**
+ * \brief A custom sort-by-bottom comparator algorithm for line-segments and edges
+ * \return If one item is "less" than the other
+ */
+template <typename T>
+bool sortByBottom(T &a, T &b);

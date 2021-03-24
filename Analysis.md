@@ -4,13 +4,19 @@ The algorithm described in the paper should run in `O(nlogn)` where n is the num
 
 # Time Complexitiy
 
-Our implementation of the algorithm is in `O(nlogn)` time complexity -  This is because sub-algorithms like `partition` have been implemented in `O(n)`, making the overall time complexity to be also `O(nlogn)`.
+Our implementation of the algorithm is in `O(nlogn)` time complexity.
+A further analysis can be made as follows:
+Stripes follows a divide and conquer approach, with the merge steps including `copy`, `concat` and `blacken` executing in `O(n)` time.
+Hence the relation is as follows:
+`T(n) = 2*T(n/2) + O(n)`
+Solving for this recurrence, we get
+`T(n) = O(nlogn)`
 
 # Growth with number of rectangles
 
-As the number of rectanlges grow, the time taken by the algorithm also grows in `O(nlogn)` time. Below is a plot that illustrates this. We ran the algorithm for rectangles placed in a matrix-like figure, with half of the width overlapping with the adjacent rectangles. We stress tested the algorithm for number of rectangles ranging from 1 to more than 500,000.
+As the number of rectanlges grow, the time taken by the algorithm also grows in `O(nlogn)` time. Below is a plot that illustrates this. We stress tested the algorithm for number of rectangles ranging from 1 to more than 250,000.
 
-![](../plot-n.png)
+![](../Analysis/plot-n.png)
 
 Here is the data used to plot the graph, the first column is the number of rectangles, and the second column is the time taken ( in seconds ):
 
@@ -39,25 +45,24 @@ Here is the data used to plot the graph, the first column is the number of recta
 
 The algorithm's time complexity does not appear to depend reliably on the dimensions of the input rectangles. Below is a plot that illustrates this.
 
-![](../plot-dim.png)
+![](../Analysis/plot-dim.png)
 
 # Verification of Correctness
 
 A testing script was written to automatically check the implementation for correctness for inputs of various sizes. Here is a demonstration of the script in action:
 
-![](../auto-test.gif)
-
+![](../Analysis/auto-test.gif)
 
 ## General Discussion on the Algorithm
 
-The research paper presents the complete algorithm ( for calculating measure and contour ) as an extension of a common algorithm called `STRIPES`. The stripes algorithm itself depends on two sub algorithms - `copy` and `blacken`. 
+The research paper presents the complete algorithm ( for calculating measure and contour ) as an extension of a common algorithm called `STRIPES`. The stripes algorithm itself depends on three sub algorithms - `copy`, `blacken` and `concat`.
 
 **Divide and Conquer**
 
-The main algorithm used in the paper, `STRIPES` is uses the divide-and-conquer method. It recursively divides the problem into two smaller parts, and then combines the solution to solve
+The main algorithm used in the paper, `STRIPES` uses the divide-and-conquer method. It recursively divides the problem into two smaller parts, and then combines the solution to solve
 the original problem.
 
-However, the paper does not any information about optimal implementation of several smaller algorithms used such as `partition` which are expected to be implemented in `O(n)`. However, we managed to implement them in `O(n)` using techniques like 2-pointers. Our initial implementation was a naive`O(n*n)` using nested loops,  which we later managed to reduce to `O(n*logn)`.
+However, the paper does not any information about optimal implementation of several smaller algorithms used such as `partition` which are expected to be implemented in `O(n)`. However, we managed to implement them in `O(n)` using techniques like 2-pointers. Our initial implementation was a naive`O(n*n)` using nested loops, which we later managed to reduce to `O(n*logn)`.
 
 The paper solves the following problems:
 
@@ -71,7 +76,7 @@ The paper solves the following problems:
 
 We faced several problems while implementing the algorithm. The major problem was in understanding the research paper. This is because the explaination of the algorithm was mostly in textual manner and a lot of the terminology was unfamiliar to us. Also, the paper gives only a formal descreption of the algorithm, and no examples were provided, that would have helped us to understand it.
 
-Finally, the smaller sub-algorithms like concat, blacken, and copy were difficult to implement in `O(n)`, which is necessary for the entire algorithm to be `O(nlogn)`.
+Finally, the smaller sub-algorithms like concat, blacken, and copy were slightly difficult to implement in `O(n)`, which is necessary for the entire algorithm to be `O(nlogn)`.
 
 ## References
 

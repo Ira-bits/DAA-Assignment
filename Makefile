@@ -12,26 +12,23 @@ algo : main.o Rectangle.o lib.o RectangleSet.o stripes.o # Add other .o files he
 		@mv *.o $(OUT_DIR)
 		@mv algo $(OUT_DIR)
 
-main.o : main.cpp
-			$(CC) $(CFLAGS) main.cpp $(OUTPUT) $(INC)
+main.o : src/main.cpp
+			$(CC) $(CFLAGS) src/main.cpp $(OUTPUT) $(INC)
 
-Rectangle.o : Rectangle.cpp
-			$(CC) $(CFLAGS) Rectangle.cpp $(OUTPUT) $(INC)
+Rectangle.o : src/Rectangle.cpp
+			$(CC) $(CFLAGS) src/Rectangle.cpp $(OUTPUT) $(INC)
 
-RectangleSet.o : RectangleSet.cpp
-			$(CC) $(CFLAGS) RectangleSet.cpp $(OUTPUT) $(INC)
+RectangleSet.o : src/RectangleSet.cpp
+			$(CC) $(CFLAGS) src/RectangleSet.cpp $(OUTPUT) $(INC)
 		
-stripes.o : stripes.cpp
-			$(CC) $(CFLAGS) stripes.cpp $(OUTPUT) $(INC)
+stripes.o : src/stripes.cpp
+			$(CC) $(CFLAGS) src/stripes.cpp $(OUTPUT) $(INC)
 
-lib.o : lib.cpp
-			$(CC) $(CFLAGS) lib.cpp $(OUTPUT) $(INC)
-
-main_test.o : main.cpp
-			$(CC) $(CFLAGS) $(TFLAGS) main.cpp $(OUTPUT) $(INC)
+lib.o : src/lib.cpp
+			$(CC) $(CFLAGS) src/lib.cpp $(OUTPUT) $(INC)
 
 test:
-			./test
+			./scripts/test
 
 clean : 
 			rm -rf $(OUT_DIR)

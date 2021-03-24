@@ -5,7 +5,9 @@ using std::pair;
 using std::vector;
 
 typedef float coord;
-
+/*! \struct point
+    \brief A point containing x and y coordinates.
+*/
 struct point {
     coord x;
     coord y;
@@ -80,13 +82,22 @@ enum class lru {
     UNDEF
 };
 
+/*! \struct ctree
+    \brief A tree for contour.
+
+*/
 struct ctree {
-    float x;
-    lru side;
-    ctree *lson;
-    ctree *rson;
+    float x;     ///< x-coordinate of side
+    lru side;    ///< the orientation of the side
+    ctree *lson; ///< left child
+    ctree *rson; ///< right child
 };
 
+/*! 
+    \class stripe
+    \brief A stripe class, holds the x and y intervals, along with each stripe's measure and tree.
+
+*/
 class stripe {
   public:
     interval x_interval;
@@ -95,6 +106,11 @@ class stripe {
     ctree *tree = nullptr;
 };
 
+/*! 
+    \struct stripesReturn
+    \brief Helper struct.
+
+*/
 struct stripesReturn {
     vector<edgeInterval> L;
     vector<edgeInterval> R;

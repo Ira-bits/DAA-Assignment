@@ -1,6 +1,11 @@
 #pragma once
 #include "types.hpp"
 
+/*! \class Rectangle
+    \brief A Rectangle.
+
+    Holds Coordinates of points and id.
+*/
 class Rectangle {
   private:
     coord x_left;
