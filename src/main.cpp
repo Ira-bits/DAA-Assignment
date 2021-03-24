@@ -1,3 +1,13 @@
+//
+//      DAA Assignment 1
+//      Members:
+//               Abhinav Sukumar Rao: 2018A7PS0172H
+//               Aviral Agarwal: 2018A7PS0192H
+//               Akshay Tiwari: 2018A7PS0201H
+//               Divyanshu Agrawal: 2018A7PS0267H
+//
+//
+//
 #include "includes/RectangleSet.hpp"
 #include "includes/lib.hpp"
 
