@@ -28,8 +28,8 @@ void dfs(ctree *cur, vector<ctree> &free_edges, interval h_interval) {
     if (cur->lson == nullptr && cur->rson == nullptr) {
 
         if (cur->side != lru::UNDEF && cur->x <= h_interval.top && cur->x >= h_interval.bottom) {
-            //leaf node
-            free_edges.push_back(*cur);
+
+            free_edges.push_back(*cur); ///<leaf node
         }
         return;
 
@@ -64,7 +64,7 @@ vector<line_segment> RectangleSet::contourPieces(edge h, vector<stripe> S) {
     vector<interval> J;
     vector<ctree> leaf_edges;
 
-    dfs(s.tree, leaf_edges, h.inter); //get all intervals
+    dfs(s.tree, leaf_edges, h.inter); ///< get all intervals
 
     if (leaf_edges.empty()) {
         J.push_back({h.inter.bottom, h.inter.top});
@@ -102,5 +102,5 @@ vector<line_segment> RectangleSet::calculateContour() {
         c_pieces.insert(c_pieces.end(), c_pieces_h.begin(), c_pieces_h.end());
     }
 
-    return c_pieces; //Union(c_pieces);
+    return c_pieces; ///< Next, perform Union(c_pieces);
 }

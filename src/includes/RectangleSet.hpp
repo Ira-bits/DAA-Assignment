@@ -2,8 +2,8 @@
 #include "lib.hpp"
 
 /**
- * A class to represent a set of Rectangles with methods for calulating the 
- * associated measure and contour.
+ * \class RectangleSet
+ * \brief A RectangleSet class to represent a set of Rectangles with methods for calulating the associated measure and contour.
 */
 class RectangleSet {
   private:
