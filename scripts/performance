@@ -45,10 +45,10 @@ def mtx_plot(order: int):
         print("{}%".format(100*ord/lim), end='\r')
         sizes.append(ord)
         tc = " ".join([str(int) for int in gen_tcs_mtx(ord)])
-        with open("scripts/input.txt", "w") as inp:
+        with open("./scripts/input.txt", "w") as inp:
             inp.write(tc)
         beg_time = time.time()
-        os.system("./build/algo<input.txt>/dev/null")
+        os.system("./build/algo<./scripts/input.txt>/dev/null")
         end_time = time.time()
         times.append(end_time-beg_time)
         print(ord, end_time-beg_time)
@@ -65,11 +65,11 @@ def dim_plot():
     for dim in range(1, 1000, 10):
         print("{}%".format(100*dim/1000), end='\r')
         tc = " ".join([str(int) for int in gen_tcs_dim(dim)])
-        with open("scripts/input.txt", "w") as inp:
+        with open("./scripts/input.txt", "w") as inp:
             inp.write(tc)
         sizes.append(dim)
         beg_time = time.time()
-        os.system("./build/algo<input.txt>/dev/null")
+        os.system("./build/algo<./scripts/input.txt>/dev/null")
         end_time = time.time()
         times.append(end_time-beg_time)
 

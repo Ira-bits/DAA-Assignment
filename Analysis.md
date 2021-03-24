@@ -16,7 +16,7 @@ Solving for this recurrence, we get
 
 As the number of rectanlges grow, the time taken by the algorithm also grows in `O(nlogn)` time. Below is a plot that illustrates this. We stress tested the algorithm for number of rectangles ranging from 1 to more than 250,000.
 
-![](../plot-n.png)
+![](../Analysis/plot-n.png)
 
 Here is the data used to plot the graph, the first column is the number of rectangles, and the second column is the time taken ( in seconds ):
 
@@ -45,13 +45,13 @@ Here is the data used to plot the graph, the first column is the number of recta
 
 The algorithm's time complexity does not appear to depend reliably on the dimensions of the input rectangles. Below is a plot that illustrates this.
 
-![](../plot-dim.png)
+![](../Analysis/plot-dim.png)
 
 # Verification of Correctness
 
 A testing script was written to automatically check the implementation for correctness for inputs of various sizes. Here is a demonstration of the script in action:
 
-![](../auto-test.gif)
+![](../Analysis/auto-test.gif)
 
 ## General Discussion on the Algorithm
 
