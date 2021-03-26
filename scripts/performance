@@ -79,16 +79,27 @@ def dim_plot():
 
 def do_mtx():
     plot_num = mtx_plot(4)
-    # _fig, ax = plt.subplots()  # Create a figure containing a single axes.
-    plt.plot(plot_num[0], plot_num[1], 'b')
+    _fig, ax = plt.subplots()  # Create a figure containing a single axes.
+    act_line, = ax.plot(plot_num[0], plot_num[1], 'b', label='perf')
+    ax.legend()
+    
     x = np.linspace(2, plot_num[0][-1], len(plot_num[0]))
     y = np.log(x)
-    y = np.multiply(x, y)/750000
-    plt.plot(x, y, 'r')
+    y = np.multiply(x, y)/850000
+    # y2 = np.multiply(x,x)/15000000000
+    
+    nlogn, = ax.plot(x, y, 'r',label='nlogn/8.5e+5')
+    ax.legend()
+    
+    # n2 = ax.plot(x,y2,'g',label='n^2/1.5e+10')
+    # ax.legend()
+    
     # ax.plot([0, 1], [0, 1], transform=ax.transAxes)
+    
     plt.xlabel("Number of Rectangles")
     plt.ylabel("Time taken for computation (seconds)")
     plt.show()
+    _fig.savefig('Analysis/plot-n.png')
 
 
 def do_dim():
